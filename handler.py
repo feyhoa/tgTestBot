@@ -6,7 +6,7 @@ from enum import Enum
 
 from aiogram import Bot, Dispatcher, executor
 from aiogram.types import Message
-from config import BOT_TOKEN, ADMIN
+from config import BOT_TOKEN, ADMINS
 
 mainloop = asyncio.new_event_loop()
 asyncio.set_event_loop(mainloop)
@@ -33,13 +33,15 @@ dispatcher = Dispatcher(chatLowMatterBot, loop=mainloop)
 
 
 async def notify_admins_start(dp) -> None:
-    await chatLowMatterBot.send_message(chat_id=ADMIN,
-                                        text=f"Бот запущен")
+    for admin in ADMINS:
+        await chatLowMatterBot.send_message(chat_id=admin,
+                                            text=f"Бот запущен")
 
 
 async def notify_admins_end(dp) -> None:
-    await chatLowMatterBot.send_message(chat_id=ADMIN,
-                                        text=f"Бот остановлен")
+    for admin in ADMINS:
+        await chatLowMatterBot.send_message(chat_id=admin,
+                                            text=f"Бот остановлен")
 
 
 @dispatcher.message_handler(commands=['start'])
